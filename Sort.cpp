@@ -1,9 +1,7 @@
 #include <iostream>
 using namespace std;
 
-
-void insertionSort(int arr[], int n)
-{
+void insertionSort(int arr[], int n) {
     for (int i = 1; i < n; ++i) {
         int key = arr[i];
         int j = i - 1;
@@ -17,21 +15,30 @@ void insertionSort(int arr[], int n)
 }
 
 
-void printArray(int arr[], int n)
-{
+void printArray(int arr[], int n){
     for (int i = 0; i < n; ++i)
         cout << arr[i] << " ";
     cout << endl;
 }
 
+int* Array(int n) {
+    int* array = new int[n];
+    int j = 0;
+  	for (int i = n; i>=1; i--){
+		array[j] = i;
+		j++;
+	}
+    return array;
+}
 
-int main()
-{
-    int arr[] = { 12, 11, 13, 5, 6 };
-    int n = sizeof(arr) / sizeof(arr[0]);
+int main() {
+    int size = 0;
+    cin >> size;
+    int *dataArray = Array(size);
 
-    insertionSort(arr, n);
-    printArray(arr, n);
+    printArray(dataArray, size);
+    insertionSort(dataArray, size);
+    printArray(dataArray, size);
 
     return 0;
 }
