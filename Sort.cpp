@@ -1,8 +1,10 @@
 #include <iostream>
+#include <chrono> 
 using namespace std;
+using namespace std::chrono;
 
 void insertionSort(int arr[], int n) {
-    for (int i = 1; i < n; ++i) {
+   for (int i = 1; i < n; ++i) {
         int key = arr[i];
         int j = i - 1;
 
@@ -25,8 +27,8 @@ int* Array(int n) {
     int* array = new int[n];
     int j = 0;
   	for (int i = n; i>=1; i--){
-		array[j] = i;
-		j++;
+	    array[j] = i;
+	    j++;
 	}
     return array;
 }
@@ -36,9 +38,12 @@ int main() {
     cin >> size;
     int *dataArray = Array(size);
 
-    printArray(dataArray, size);
+    auto start = high_resolution_clock::now();
     insertionSort(dataArray, size);
-    printArray(dataArray, size);
+    auto end = high_resolution_clock::now();
+
+    duration<double> duration = end - start;
+    cout << "Tiempo de ejecución: " << duration.count() << " segundos" << endl;
 
     return 0;
 }
