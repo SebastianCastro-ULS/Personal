@@ -36,15 +36,18 @@ int* Array(int n) {
 int main() {
     int size = 0;
     cin >> size;
-    int *dataArray = Array(size);
+    int *dataArray; 
+    for(int i = size; i < 10000000; i = i*10) {
+         dataArray = Array(i);
+         auto start = high_resolution_clock::now();
+         insertionSort(dataArray,i);
+         auto end = high_resolution_clock::now();
 
-    auto start = high_resolution_clock::now();
-    insertionSort(dataArray, size);
-    auto end = high_resolution_clock::now();
-
-    duration<double> duration = end - start;
-    cout << "Tiempo de ejecución: " << duration.count() << " segundos" << endl;
+         duration<double> duration = end - start;
+         cout << "Tiempo de ejecución de "<< i << " datos es: "<< duration.count() << " segundos" << endl;
+         // printArray(dataArray,i);
+	 dataArray = nullptr;
+    }
 
     return 0;
 }
-
