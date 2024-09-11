@@ -69,17 +69,17 @@ int* Array(int n) {
 int main() {
     int size = 0;
     cin >> size;
-    int *dataArray = Array(size);
-    printArray(dataArray, size);
+    int *dataArray;
 
-    auto start = high_resolution_clock::now();
-    quickSort(dataArray, 0, size - 1);
-    auto end = high_resolution_clock::now();
+    for(int i = size; i < 10000; i = i+100) {
+         dataArray = Array(i); 
+         auto start = high_resolution_clock::now();
+         quickSort(dataArray, 0, i - 1);
+         auto end = high_resolution_clock::now();
 
-    duration<double> duration = end - start;
-    cout << "Tiempo de ejecución es "<< duration.count() << " segundos" << endl;
-    printArray(dataArray, size);
- 
+         duration<double> duration = end - start;
+         cout << "Tiempo de ejecución de "<< i << " datos es: "<< duration.count() << " segundos" << endl;
+    }
  /* for(int i = size; i < 10000; i = i+100) {
          dataArray = Array(i);
          auto start = high_resolution_clock::now();
