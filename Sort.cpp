@@ -1,8 +1,42 @@
 #include <iostream>
-#include <chrono> 
+#include <chrono>
 using namespace std;
 using namespace std::chrono;
 
+// Quick Sort
+
+void swap(int *a, int *b) {
+  int t = *a;
+  *a = *b;
+  *b = t;
+}
+
+int partition(int array[], int low, int high) {
+  int pivot = array[high];
+  int i = (low - 1);
+
+  for (int j = low; j < high; j++) {
+    if (array[j] <= pivot) {
+      i++;
+      swap(&array[i], &array[j]);
+    }
+  }
+
+  swap(&array[i + 1], &array[high]);
+
+  return (i + 1);
+}
+
+void quickSort(int array[], int low, int high) {
+  if (low < high) {
+    int pi = partition(array, low, high);
+
+    quickSort(array, low, pi - 1);
+    quickSort(array, pi + 1, high);
+  }
+}
+
+//Inserion Sort
 void insertionSort(int arr[], int n) {
    for (int i = 1; i < n; ++i) {
         int key = arr[i];
@@ -15,7 +49,6 @@ void insertionSort(int arr[], int n) {
         arr[j + 1] = key;
     }
 }
-
 
 void printArray(int arr[], int n){
     for (int i = 0; i < n; ++i)
@@ -36,8 +69,11 @@ int* Array(int n) {
 int main() {
     int size = 0;
     cin >> size;
-    int *dataArray; 
-    for(int i = size; i < 10000; i = i+100) {
+    int *dataArray = Array(size);
+    printArray(dataArray, size);
+    quickSort(dataArray, 0, size - 1);
+    printArray(dataArray, size); 
+   /* for(int i = size; i < 10000; i = i+100) {
          dataArray = Array(i);
          auto start = high_resolution_clock::now();
          insertionSort(dataArray,i);
@@ -47,7 +83,7 @@ int main() {
          cout << "Tiempo de ejecución de "<< i << " datos es: "<< duration.count() << " segundos" << endl;
          // printArray(dataArray,i);
 	 dataArray = nullptr;
-    }
+    }*/
 
     return 0;
 }
