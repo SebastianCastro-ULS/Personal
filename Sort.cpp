@@ -37,7 +37,7 @@ int main() {
     int size = 0;
     cin >> size;
     int *dataArray; 
-    for(int i = size; i < 10000000; i = i*10) {
+    for(int i = size; i < 10000; i = i+100) {
          dataArray = Array(i);
          auto start = high_resolution_clock::now();
          insertionSort(dataArray,i);
