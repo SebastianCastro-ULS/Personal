@@ -58,39 +58,42 @@ void printArray(int arr[], int n){
 
 int* Array(int n) {
     int* array = new int[n];
-    int j = 0;
-  	for (int i = n; i>=1; i--){
-	    array[j] = i;
-	    j++;
-	}
+    int j = n;
+    for (int i = 0; i<n/2;i++){
+         array[i] = i+1;
+    }	 
+    for (int i = n/2; i<n; i++){
+	 array[i] = j;
+	 j--;
+         }	 
     return array;
 }
-
 int main() {
     int size = 0;
     cin >> size;
     int *dataArray;
 
-    for(int i = size; i < 10000; i = i+100) {
-         dataArray = Array(i); 
+    /* for(int i = size; i < 100; i = i+10) {
+         dataArray = Array(size); 
          auto start = high_resolution_clock::now();
          quickSort(dataArray, 0, i - 1);
          auto end = high_resolution_clock::now();
-
+         
          duration<double> duration = end - start;
          cout << "Tiempo de ejecución de "<< i << " datos es: "<< duration.count() << " segundos" << endl;
-    }
- /* for(int i = size; i < 10000; i = i+100) {
-         dataArray = Array(i);
+    }*/
+
+    int *dataArray2;
+    for(int i = size; i < 100; i = i+10) {
+         dataArray2 = Array(i);
          auto start = high_resolution_clock::now();
-         insertionSort(dataArray,i);
+         insertionSort(dataArray2,i);
          auto end = high_resolution_clock::now();
 
          duration<double> duration = end - start;
          cout << "Tiempo de ejecución de "<< i << " datos es: "<< duration.count() << " segundos" << endl;
-         // printArray(dataArray,i);
-	 dataArray = nullptr;
-    }*/
+       }
 
     return 0;
 }
+
