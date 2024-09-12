@@ -1,42 +1,38 @@
 #include <iostream>
 #include <chrono>
+#include <fstream>
 using namespace std;
 using namespace std::chrono;
 
 // Quick Sort
 
-void swap(int *a, int *b) {
-  int t = *a;
-  *a = *b;
-  *b = t;
-}
+int partition(int arr[], int low, int high) {
 
-int partition(int array[], int low, int high) {
-  int pivot = array[high];
-  int i = (low - 1);
+    int pivot = arr[high];
+    int i = low - 1;
 
-  for (int j = low; j < high; j++) {
-    if (array[j] <= pivot) {
-      i++;
-      swap(&array[i], &array[j]);
+    for (int j = low; j <= high - 1; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
     }
-  }
 
-  swap(&array[i + 1], &array[high]);
-
-  return (i + 1);
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
 }
 
-void quickSort(int array[], int low, int high) {
-  if (low < high) {
-    int pi = partition(array, low, high);
+void quickSort(int arr[], int low, int high) {
 
-    quickSort(array, low, pi - 1);
-    quickSort(array, pi + 1, high);
-  }
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
 }
 
-//Inserion Sort
+
+//Insertion Sort
 void insertionSort(int arr[], int n) {
    for (int i = 1; i < n; ++i) {
         int key = arr[i];
@@ -50,50 +46,135 @@ void insertionSort(int arr[], int n) {
     }
 }
 
+//Imprimir Array
 void printArray(int arr[], int n){
     for (int i = 0; i < n; ++i)
         cout << arr[i] << " ";
     cout << endl;
 }
 
-int* Array(int n) {
+//Generando WorstCase
+int* WorstArray(int n){
     int* array = new int[n];
     int j = n;
-    for (int i = 0; i<n/2;i++){
-         array[i] = i+1;
-    }	 
-    for (int i = n/2; i<n; i++){
-	 array[i] = j;
+    for (int i = 0; i<n;i++){
+         array[i] = j;
 	 j--;
-         }	 
+    }
     return array;
 }
-int main() {
-    int size = 0;
-    cin >> size;
-    int *dataArray;
 
-    /* for(int i = size; i < 100; i = i+10) {
-         dataArray = Array(size); 
-         auto start = high_resolution_clock::now();
-         quickSort(dataArray, 0, i - 1);
-         auto end = high_resolution_clock::now();
-         
-         duration<double> duration = end - start;
-         cout << "Tiempo de ejecución de "<< i << " datos es: "<< duration.count() << " segundos" << endl;
-    }*/
-
-    int *dataArray2;
-    for(int i = size; i < 100; i = i+10) {
-         dataArray2 = Array(i);
-         auto start = high_resolution_clock::now();
-         insertionSort(dataArray2,i);
-         auto end = high_resolution_clock::now();
-
-         duration<double> duration = end - start;
-         cout << "Tiempo de ejecución de "<< i << " datos es: "<< duration.count() << " segundos" << endl;
-       }
-
-    return 0;
+//Generando BestCase
+int* BestArray(int n){
+    int* Array = new int[n];
+    for (int i = 0; i<n; i++){
+        Array[i] = i+1;
+    }
+    return Array;
 }
 
+//Generando AverageCase
+int* AverageArray(int n){
+     int* Array = new int[n];
+     for (int i = 0; i<n/2; i++){
+         Array[i] = i+1;
+     }
+     int j = n;
+     for (int i = n/2; i<n; i++){
+         Array[i] = j;
+         j--;
+     }
+     return Array;
+}
+
+int main() {
+    int size = 0;
+    int type;
+    cin >> size;
+    string sort;
+    cout << "1=Worst   2=Best    3=Average\n";
+    cin >> type;
+    cin >> sort;
+    int *dataArray;
+
+    ofstream outFile("AverageQuick.txt");
+    if (!outFile) {
+        cerr << "No se pudo abrir el archivo para escribir." << endl;
+        return 1;
+    }
+
+    if (sort == "Q") {
+        if (type == 1) {
+            for (int i = size; i < 45000; i += 50) {
+                dataArray = WorstArray(i);
+                auto start = high_resolution_clock::now();
+                quickSort(dataArray, 0, i - 1);
+                auto end = high_resolution_clock::now();
+		duration<double> duration = end - start;
+		cout << i << " " << duration.count() << endl;
+                outFile << i << " " << duration.count() << endl;
+                delete[] dataArray;
+            }
+        } else if (type == 2) {
+            for (int i = size; i < 45000; i += 50) {
+                dataArray = BestArray(i);
+                auto start = high_resolution_clock::now();
+                quickSort(dataArray, 0, i - 1);
+                auto end = high_resolution_clock::now();
+		duration<double> duration = end - start;
+		cout << i << " " << duration.count() << endl;
+                outFile << i << " " << duration.count() << endl;
+                delete[] dataArray;
+            }
+        } else if (type == 3) {
+            for (int i = size; i < 45000; i += 50) {
+                dataArray = AverageArray(i);
+                auto start = high_resolution_clock::now();
+                quickSort(dataArray, 0, i - 1);
+                auto end = high_resolution_clock::now();
+		duration<double> duration = end - start;
+                cout << i << " " << duration.count() << endl;
+                outFile << i << " " << duration.count() << endl;
+                delete[] dataArray;
+            }
+        }
+    } else {
+        if (type == 1) {
+            for (int i = size; i < 45000; i += 50) {
+                dataArray = WorstArray(i);
+                auto start = high_resolution_clock::now();
+                insertionSort(dataArray, i);
+                auto end = high_resolution_clock::now();
+		duration<double> duration = end - start;
+                cout << i << " " << duration.count() << endl;
+                outFile << i << " " << duration.count() << endl;
+       	        delete[] dataArray;
+            }
+        } else if (type == 2) {
+            for (int i = size; i < 45000; i += 50) {
+                dataArray = BestArray(i);
+                auto start = high_resolution_clock::now();
+                insertionSort(dataArray, i);
+                auto end = high_resolution_clock::now();
+		duration<double> duration = end - start;
+                cout << i << " " << duration.count() << endl;
+                outFile << i << " " << duration.count() << endl;
+                delete[] dataArray;
+            }
+        } else if (type == 3) {
+            for (int i = size; i < 45000; i += 50) {
+                dataArray = AverageArray(i);
+                auto start = high_resolution_clock::now();
+                insertionSort(dataArray, i);
+                auto end = high_resolution_clock::now();
+		duration<double> duration = end - start;
+                cout << i << " " << duration.count() << endl;
+                outFile << i << " " << duration.count() << endl;
+                delete[] dataArray;
+            }
+        }
+    }
+
+    outFile.close();
+    return 0;
+}
